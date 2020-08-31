@@ -7,14 +7,54 @@ class Array {
     push(element) {
         this.data[this.length] = element;
         this.length++;
-        return this.length;
+        console.log(`Pushed element : ${element}`);
     }
 
     pop() {
         const item = this.data[this.length - 1];
         delete this.data[this.length - 1];
         this.length--;
+        console.log(`Poped element : ${item}`);
+        return item;
+    }
+
+    getItemAtIndex(index) {
+        return `${this.data[index]} found at index ${index}`;
+    }
+
+    insertAt(item, index) {
+        for (let i = this.length; i >= index; i--) {
+            this.data[i] = this.data[i-1];
+        }
+        this.data[index] = item;
+        this.length++;
+        console.log(`${item} is inserted at index ${index}`);
         return this.data;
+    }
+
+    deleteAt(index) {
+        const item = this.data[index];
+
+        for (let i = index; i < this.length - 1; i++) {
+            this.data[i] = this.data[i+1];
+        }
+        delete this.data[this.length - 1];
+        this.length--;
+        return `${item} is deleted`;
+    }
+
+    searchByItem(item) {
+        for (let i = 0; i < this.length; i++) {
+            if ( this.data[i] === item) {
+                return `${item} found at index ${i}`;
+            }
+        }
+    }
+
+    reverse() {
+        for (let i = this.length - 1; i >= 0; i--) {
+            console.log(this.data[i]);
+        }
     }
 
 }
@@ -25,9 +65,22 @@ array.push(20);
 array.push(30);
 array.push(40);
 array.push(50);
+array.pop();
+array.insertAt(35, 3);
+console.log(array.deleteAt(3));
+array.insertAt(50, 4);
 
-console.log('Print element in the array');
-
+console.log('\nElements present in the array : ');
 for(let value in array.data) {
-    console.log(array.data[value] + ' ');
+    console.log(`index : ${this.length++} , value : ${array.data[value]}`);
 }
+
+console.log('');
+
+console.log(array.searchByItem(40));
+console.log(array.getItemAtIndex(1));
+
+console.log('\nElements after reverse : ')
+array.reverse();
+
+//console.log(array);
