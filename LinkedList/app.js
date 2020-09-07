@@ -1,107 +1,98 @@
 class Node {
-    constructor(data) {
+    constructor(data, next = null) {
         this.data = data;
-        this.next = null;
-        this.previous = null;
+        this.next = next;
     }
 }
 
 class LinkedList {
     constructor() {
         this.head = null;
-        this.tail = null;
         this.length = 0;
     }
 
-    size() {
-        return this.length;
-    }
+    //head = () => this.head;
 
-    addLast(data) {
-        let node = new Node(data);
+    length = () => this.length;
 
-        if (this.head === null) {
-            this.head = node;
-            this.tail = this.head;
+    addAtLast = (data) => {
+        const node = new Node(data);
+        if (this.head) {
+            let current = this.head;
+            while (current.next !== null) {
+                current = current.next;
+            }
+            current.next = node;
         } else {
-            this.tail.next = node;
-            node.previous = this.tail;
-            this.tail = node;
-        }
-        this.length++;
-    }
-
-    addFirst(data) {
-        let node = new Node(data);
-
-        if (this.head === null) {
-            this.head = node;
-            this.tail = this.head;
-        } else {
-            node.next = this.head;
-            this.head.previous = node;
             this.head = node;
         }
         this.length++;
     }
 
-    insertAt(index, data) {
-        
-        // if index is out of range
+    addAtFirst = (data) => {
+        this.head = new Node(data, this.head);
+        this.length++;
+    }
+
+    addAtIndex = (index, data) => {
         if (index < 0 || index > this.length) {
             return null;
         }
 
-        // if first index 
         if (index === 0) {
-            this.addFirst(data);
+            this.addAtFirst(data);
+            this.length++;
             return;
+        } else {
+
+            const newNode = new Node(data);
+            let current, previous;
+            current = this.head;
+
+            let count = 0;
+
+            while (count < index - 1) {
+                count++;
+                previous = current;
+                current = current.next;
+            }
+
+            newNode.next = current;
+            previous.next = newNode;
         }
-
-        const node = new Node(data);
-        let current, previous;
-        
-        //set current to first
-        current = this.head;
-
-        let count = 0;
-
-        while (count < index - 1) {
-            previous = current;   // Node before index
-            count++;
-            current = current.next;   // Node after index 
-        }
-
-        node.next = current;
-        previous.next = node;
-
         this.length++;
     }
 
-    removeLast() {
-
-        if (this.head !== this.tail) {
-            let node = this.tail;
-            this.tail = this.tail.previous;
-            this.tail.next = null;
-            this.length--;
-            return node;
+    removeFirst = () => {
+        if (!this.head) {
+            return;
         }
+        this.head = this.head.next;
+        this.length--;
     }
 
-    removeFirst() {
-        if (this.head !== this.tail) {
-            let node = this.head;
-            this.head = this.head.next;
-            this.head.previous = null;
-            this.length--;
-            return node;
+    removeLast = () => {
+        if(!this.head) {
+            return;
         }
+
+        if (!this.head.next) {
+            this.head = null;
+        }
+
+        let previous = this.head;
+        let node = this.head.next;
+
+        while(node.next) {
+            previous = node;
+            node = node.next;
+        }
+        previous.next = null;
+        this.length--;
     }
 
-    removeAt(index) {
-         // if index is out of range
-         if (index < 0 || index > this.length) {
+    removeAt = (index) => {
+        if (index < 0 || index > this.length) {
             return null;
         }
 
@@ -123,83 +114,71 @@ class LinkedList {
         this.length--;
     }
 
-    getAt(index) {
+    removeElement = (data) => {
         let current = this.head;
-        let count = 0;
+        let previous = null;
 
-        while(current) {
-            if (count == index - 1) {
-                console.log(current.data);
+        while (current !== null) {
+            if (current.data === data) {
+                if (previous === null) {
+                    this.head = current.next;
+                } else {
+                    previous.next = current.next;
+                }
+                this.length--;
+                return current.data;
             }
-            count++;
+            previous = current;
             current = current.next;
         }
-        return null;
+        return -1;
     }
 
-    reverse() {
+    /* removeDuplicate = () => {
+
+    }
+
+    reverse = (head) => {
+        let previous = null;
         let current = this.head;
-        let prevNode = null;
-        let nextNode = null;
+        let temp = null;
 
-        while (current) {
-            // store next node 
-            nextNode = current.next;
-
-            // change next node of the current node so it would link to previous node.
-            current.next = prevNode;
-
-            // move previous node and current node one step forward
-            prevNode = current;
-            current = nextNode;
+        while (current !== null) {
+            temp = current.next;
+            current.next = previous;
+            previous = current;
+            current = temp;
         }
+        return previous;
+    } */
 
-        // Reset head and tail
-        this.tail = this.head;
-        this.head = prevNode;
-
-        return this;
-    }
-
-    findMiddleNode() {              // O(1)
-        let fast = this.head;
-        let slow = this.head;
-
-        while (fast.next !== null && fast.next.next !== null) {
-            fast = fast.next.next;
-            slow = slow.next;
-        }
-
-        return slow.data;
-    }
-
-    printList() {
+    printList = () => {
         let current = this.head;
         let str = 'HEAD:--';
         while (current) {
             str += "[" + current.data + "]-->"
             current = current.next;
         }
-        console.log(`${str}:TAIL`);
+        console.log(`${str}:NULL`);
     }
 }
 
-function useLinkedList() {
+const useLinkedList = () => {
     let list = new LinkedList();
-    list.addLast(10);
-    list.addLast(20);
-    list.addLast(30);
-    list.addFirst(50);
-    list.addFirst(35);
-    list.addFirst(15);
-    list.addFirst(25);
-    list.insertAt(3, 22);
-    list.removeLast();
+
+    list.addAtFirst(20);
+    list.addAtFirst(10);
+    list.addAtLast(30);
+    list.addAtLast(40);
+    list.addAtIndex(4, 35);
+    list.removeAt(4);
+    list.removeElement(40);
     list.removeFirst();
-    list.removeAt(3);
-    list.reverse();
+    list.removeLast();
+
+    //list.reverse();
     list.printList();
-    console.log(`Middle element : ${list.findMiddleNode()}`);
 }
 
 useLinkedList();
+
