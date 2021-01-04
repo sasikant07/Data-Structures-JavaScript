@@ -72,7 +72,7 @@ class LinkedList {
     }
 
     removeLast = () => {
-        if(!this.head) {
+        if (!this.head) {
             return;
         }
 
@@ -83,7 +83,7 @@ class LinkedList {
         let previous = this.head;
         let node = this.head.next;
 
-        while(node.next) {
+        while (node.next) {
             previous = node;
             node = node.next;
         }
@@ -152,6 +152,70 @@ class LinkedList {
         return previous;
     } */
 
+    // Reverse linked list without recursion
+    /* 
+    reverse(head) {
+
+        let prev = null;
+        let curr = head;
+        let next = curr.next;
+
+        while(curr) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr 
+            curr = next
+        }
+        this.head = prev;
+        return this.head;
+
+    }
+    */
+
+    /* deleteKthNode(int) {
+        if (!this.head) {
+            return;
+        }
+        let tmp = this.head;
+
+        if (int === 0) {
+            this.head = tmp.next;
+            tmp = null;
+            return;
+        }
+
+        let counter = 0;
+        while (counter !== int - 1 && tmp) {
+            if (!tmp) {
+                return;
+            }
+            if (!tmp.next) {
+                return;
+            }
+            counter++;
+            tmp = tmp.next;
+        }
+
+        tmp.next = tmp.next.next;
+    } */
+
+    // Detect a cycle in Linked List
+    /* detectLoop = (list) => {
+        let slow = list.head;
+        let fast = list.head;
+
+        while (fast.next && fast.next.next) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow === fast) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+ */
     printList = () => {
         let current = this.head;
         let str = 'HEAD:--';
